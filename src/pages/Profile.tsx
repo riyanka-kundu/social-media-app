@@ -42,10 +42,10 @@ const Profile = () => {
           <div className="absolute -bottom-12 left-6">
             <Avatar className="h-24 w-24 border-4 border-white shadow-md">
               {user.profilePicture && (
-                <AvatarImage src={user.profilePicture} alt={user.name} />
+                <AvatarImage src={user.profilePicture} alt={user?.name} />
               )}
               <AvatarFallback className="text-2xl font-bold">
-                {user.name.charAt(0).toUpperCase()}
+                {user?.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </div>
@@ -55,8 +55,8 @@ const Profile = () => {
         <div className="px-6 pt-16 pb-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">{user.name}</h1>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
+              <h1 className="text-2xl font-bold">{user?.name}</h1>
+              <p className="text-sm text-muted-foreground">{user?.email}</p>
             </div>
             <Button asChild variant="outline" size="sm">
               <Link to="/edit-profile">
