@@ -41,7 +41,7 @@ export function AppSidebar() {
   const navigate = useNavigate();
   const { data } = useCurrentUser();
   const { mutate: logout } = useLogout();
-  const user = data?.data;
+  const user = data?.data?.user;
 
   const handleLogout = () => {
     logout(undefined, {

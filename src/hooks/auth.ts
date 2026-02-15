@@ -72,7 +72,7 @@ export const useCurrentUser = () => {
     queryKey: [QUERY_KEYS.CURRENT_USER],
     queryFn: async () => {
       const res = await axiosInstance.get(API_ROUTES.user.MY_PROFILE);
-      return res.data as TApiResponse<TUser>;
+      return res.data as TApiResponse<{ user: TUser }>;
     },
     retry: false,
   });

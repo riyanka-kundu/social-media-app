@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormControl,
@@ -33,14 +34,16 @@ const EditProfile = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const user = data?.data;
+  const user = data?.data?.user;
 
   const form = useForm<EditProfileType>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
-      name: "",
-      dateOfBirth: "",
-      gender: "male",
+      name: user?.name || "",
+      dateOfBirth: user?.dateOfBirth
+        ? new Date(user.dateOfBirth).toISOString().split("T")[0]
+        : "",
+      gender: (user?.gender as "male" | "female" | "other") || "male",
     },
   });
 
@@ -51,13 +54,13 @@ const EditProfile = () => {
         dateOfBirth: user.dateOfBirth
           ? new Date(user.dateOfBirth).toISOString().split("T")[0]
           : "",
-        gender: (user.gender as "male" | "female" | "other") || "male",
+        gender: (user?.gender as "male" | "female" | "other") || "male",
       });
       if (user.profilePicture) {
         setPreviewUrl(user.profilePicture);
       }
     }
-  }, [user, form]);
+  }, [form, user]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -180,11 +183,16 @@ const EditProfile = () => {
               control={form.control}
               name="dateOfBirth"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col">
                   <FormLabel>Date of Birth</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="date" />
-                  </FormControl>
+                  <DatePicker
+                    value={field.value ? new Date(field.value) : undefined}
+                    onChange={(date) =>
+                      field.onChange(
+                        date ? date.toISOString().split("T")[0] : "",
+                      )
+                    }
+                  />
                   <FormMessage />
                 </FormItem>
               )}

@@ -37,7 +37,7 @@ const Post = () => {
     );
   }
 
-  const isOwner = currentUser?.data?.id === post.creator.id;
+  const isOwner = currentUser?.data?.user?.id === post.creator.id;
 
   const handleDelete = () => {
     deletePost(post.id, {

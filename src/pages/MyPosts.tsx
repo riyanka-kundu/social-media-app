@@ -34,7 +34,7 @@ const MyPosts = () => {
             <SinglePost
               postData={post}
               key={post.id}
-              currentUserId={currentUser?.data?.id}
+              currentUserId={currentUser?.data?.user?.id}
             />
           ))
         ) : (
