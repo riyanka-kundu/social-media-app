@@ -1,4 +1,5 @@
 import { InfiniteScrollTrigger } from "@/components/InfiniteScrollTrigger";
+import NoData from "@/components/NoData";
 import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/auth";
 import { useFeed } from "@/hooks/post";
@@ -12,14 +13,14 @@ const Home = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeed({
     page: 1,
   });
-  console.log(data);
+
   const allPost = useMemo(() => {
     return data?.pages.flatMap((page) => page.data.docs) ?? [];
   }, [data?.pages]);
 
   return (
     <div>
-      <div className="sticky top-0 z-10 flex justify-end mb-4 py-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="sticky top-0 z-10 flex justify-end mb-4 py-2 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <Button asChild>
           <Link to="/create-post">
             <PenSquare size={18} />
@@ -37,7 +38,12 @@ const Home = () => {
             />
           ))
         ) : (
-          <p>No Data Found</p>
+          <div className="col-span-full flex justify-center w-full mt-10">
+            <NoData
+              title="No Posts Yet"
+              description="Follow some users or check back later to see new posts."
+            />
+          </div>
         )}
 
         <InfiniteScrollTrigger

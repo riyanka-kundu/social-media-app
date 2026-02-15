@@ -47,6 +47,7 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [QUERY_KEYS.LOG_OUT],
     mutationFn: async () => {
@@ -57,10 +58,10 @@ export const useLogout = () => {
       const errorMessage = error.response?.data?.message || "Logout failed";
       toast.error(errorMessage);
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       clearAuthToken();
+      queryClient.setQueryData([QUERY_KEYS.CURRENT_USER], null);
       const successMessage = data.message || "Logged out successfully";
-
       toast.success(successMessage);
     },
   });
@@ -87,7 +88,7 @@ export const useUpdateProfile = () => {
         data,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
       return res.data as TApiResponse<TUser>;
     },

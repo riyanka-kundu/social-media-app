@@ -1,4 +1,5 @@
 import { InfiniteScrollTrigger } from "@/components/InfiniteScrollTrigger";
+import NoData from "@/components/NoData";
 import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/auth";
 import { usePosts } from "@/hooks/post";
@@ -19,7 +20,7 @@ const MyPosts = () => {
 
   return (
     <div>
-      <div className="sticky top-0 z-10 flex justify-end mb-4 py-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="sticky top-0 z-10 flex justify-end mb-4 py-2 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <Button asChild>
           <Link to="/create-post">
             <PenSquare size={18} />
@@ -37,7 +38,16 @@ const MyPosts = () => {
             />
           ))
         ) : (
-          <p>No Data Found</p>
+          <div className="col-span-full flex justify-center w-full mt-10">
+            <NoData
+              title="You haven't posted yet"
+              description="Create your first post to share with the world!"
+            >
+              <Button asChild className="mt-4">
+                <Link to="/create-post">Create Post</Link>
+              </Button>
+            </NoData>
+          </div>
         )}
 
         <InfiniteScrollTrigger

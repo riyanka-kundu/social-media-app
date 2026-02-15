@@ -1,3 +1,14 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Sidebar,
@@ -11,7 +22,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useCurrentUser, useLogout } from "@/hooks/auth";
-import { Home, LogOut, PenSquare, User } from "lucide-react";
+import { Home, LogOut, MessageCircle, PenSquare, User } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function getInitials(name: string) {
@@ -22,6 +33,7 @@ const navItems = [
   { title: "Feed", url: "/", icon: Home },
   { title: "Create Post", url: "/create-post", icon: PenSquare },
   { title: "My Posts", url: "/my-posts", icon: User },
+  { title: "Chat", url: "/chat", icon: MessageCircle },
 ];
 
 export function AppSidebar() {
@@ -55,7 +67,7 @@ export function AppSidebar() {
                       isActive={isActive}
                       className={
                         isActive
-                          ? "!bg-primary/80 !text-primary-foreground !font-semibold hover:!bg-primary/90 hover:!text-primary-foreground transition-all duration-200 ease-in-out"
+                          ? "bg-primary/80! text-primary-foreground! font-semibold! hover:bg-primary/90! hover:text-primary-foreground! transition-all duration-200 ease-in-out"
                           : ""
                       }
                     >
@@ -89,10 +101,28 @@ export function AppSidebar() {
             </SidebarMenuItem>
           )}
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleLogout}>
-              <LogOut size={20} strokeWidth={2} />
-              <span>Logout</span>
-            </SidebarMenuButton>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <SidebarMenuButton>
+                  <LogOut size={20} strokeWidth={2} />
+                  <span>Logout</span>
+                </SidebarMenuButton>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action will log you out of your account.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout}>
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

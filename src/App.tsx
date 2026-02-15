@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthLayout from "./pages/AuthLayout";
+import Chat from "./pages/Chat";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import EditProfile from "./pages/EditProfile";
@@ -26,8 +27,8 @@ const App = () => {
           <Route path="/profile" Component={Profile} />
           <Route path="/edit-post/:id" Component={EditPost} />
           <Route path="/edit-profile" Component={EditProfile} />
-
           <Route path="/post/:id" Component={Post} />
+          <Route path="/chat" Component={Chat} />
         </Route>
       </Routes>
     </BrowserRouter>

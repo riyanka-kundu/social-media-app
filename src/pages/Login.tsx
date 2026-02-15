@@ -30,12 +30,15 @@ const Login = () => {
   }, []);
 
   const onSubmit = (values: TLoginData) => {
-    login(values);
-    navigate("/", { replace: true });
+    login(values, {
+      onSuccess: () => {
+        navigate("/", { replace: true });
+      },
+    });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 p-4">
       <div className="bg-white/90 backdrop-blur-sm shadow-xl rounded-2xl w-full sm:w-96 p-6 transition-all hover:shadow-2xl">
         <h1 className="text-2xl font-semibold text-blue-600 mb-6 text-center">
           Login to Your Account
