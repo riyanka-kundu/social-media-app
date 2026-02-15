@@ -26,7 +26,7 @@ import { Home, LogOut, MessageCircle, PenSquare, User } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function getInitials(name: string) {
-  return name.charAt(0).toUpperCase();
+  return name?.charAt(0).toUpperCase();
 }
 
 const navItems = [
@@ -93,7 +93,7 @@ export function AppSidebar() {
                     {user.profilePicture && (
                       <AvatarImage src={user.profilePicture} alt={user.name} />
                     )}
-                    <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                    <AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
                   </Avatar>
                   <span>{user.name}</span>
                 </Link>
