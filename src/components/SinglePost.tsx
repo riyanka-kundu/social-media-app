@@ -12,7 +12,8 @@ type SinglePostProp = {
   postData: TPost;
   currentUserId?: string;
 };
-//if prop changes component will rerender, suppose i have 1k data ,i dont want rerender the
+
+// if prop changes component will rerender, suppose i have 1k data ,i don't want rerender the
 // entire 1k components when another element push to the array
 // I just want to append  the new data without rerendering everything.
 
@@ -116,7 +117,7 @@ const SinglePost = memo(({ postData, currentUserId }: SinglePostProp) => {
             >
               <Heart
                 className={`h-4 w-4 ${
-                  postData.likeCount > 0 ? "fill-red-500 text-red-500" : ""
+                  postData.isLiked ? "fill-red-500 text-red-500" : ""
                 }`}
               />
               <span className="text-xs">{postData.likeCount}</span>

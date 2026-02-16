@@ -46,6 +46,7 @@ export type TPost = {
   creator: TCreator;
   createdAt: string;
   updatedAt: string;
+  isLiked: boolean;
 };
 
 export type TCreator = {

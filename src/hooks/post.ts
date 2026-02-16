@@ -1,7 +1,7 @@
 import { QUERY_KEYS } from "@/lib/query-keys";
 import { API_ROUTES } from "@/lib/route";
 import { axiosInstance } from "@/lib/utils";
-import type { CreatePostType, EditPostType } from "@/schema/postSchema";
+import type { EditPostType } from "@/schema/postSchema";
 import type { TApiResponse, TPaginationApiResponse, TPost } from "@/type";
 import {
   useInfiniteQuery,
@@ -9,7 +9,9 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const usePosts = ({
   search = "",
@@ -74,22 +76,28 @@ export const useCreatePost = () => {
   return useMutation({
     mutationKey: [QUERY_KEYS.CREATE_POST],
     mutationFn: async (data: FormData) => {
-      const res = await axiosInstance.post<CreatePostType>(
-        API_ROUTES.post.CREATE,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      return res.data;
-    },
-    onSuccess: async () => {
-      navigate("/");
-      await queryClient.invalidateQueries({
-        predicate: (query) => query.queryKey[0] === "getAllPost",
+      const res = await axiosInstance.post(API_ROUTES.post.CREATE, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+      return res.data as TApiResponse<TPost>;
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message || "Post created successfully");
+      navigate("/my-posts");
+      await Promise.all([
+        queryClient.invalidateQueries({
+          predicate: (query) => query.queryKey[0] === "getAllPost",
+        }),
+        queryClient.invalidateQueries({
+          predicate: (query) => query.queryKey[0] === "getFeed",
+        }),
+      ]);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      toast.error(errorMessage);
     },
   });
 };
@@ -110,7 +118,7 @@ export const useEditPost = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       return res.data;
     },
@@ -150,9 +158,14 @@ export const useLike = () => {
       return res.data;
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        predicate: (query) => query.queryKey[0] === "getAllPost",
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          predicate: (query) => query.queryKey[0] === "getAllPost",
+        }),
+        queryClient.invalidateQueries({
+          predicate: (query) => query.queryKey[0] === "getFeed",
+        }),
+      ]);
     },
   });
 };
